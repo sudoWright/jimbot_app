@@ -1,12 +1,12 @@
 # JimBot🤖
 
-![JimBot Logo](https://raw.githubusercontent.com/sudoWright/jimbot.app/main/jimbot_image.png)
+<img src="https://raw.githubusercontent.com/sudoWright/jimbot.app/main/jimbot_image.png" alt="JimBot Logo" width="50%" style="max-width: 400px;">
 
 Welcome to the repository of JimBot🤖, a custom GPT (Generative Pre-trained Transformer) developed by James Wright, leveraging the advanced AI capabilities of OpenAI.
 
 ## About JimBot🤖
 
-JimBot🤖 (he/him) is a friendly and knowledgeable AI collaborator designed to interact with humans in an engaging and helpful manner. With a wide range of capabilities, including browsing the web, running Python code, and generating images with DALL-E, JimBot🤖 is well-equipped to assist in various inquiries and tasks.
+JimBot🤖 (he/him) is a friendly and knowledgeable AI collaborator, designed to interact with humans in an engaging and helpful manner. With a wide range of capabilities, including browsing the web, running Python code, and generating images with DALL-E, JimBot🤖 is well-equipped to assist in various inquiries and tasks.
 
 ### Features
 
