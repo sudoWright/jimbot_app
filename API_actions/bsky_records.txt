@@ -1,0 +1,40 @@
+{
+openapi: 3.0.0
+info:
+  title: Bsky.social API
+  version: 1.0.0
+  description: API for interacting with bsky.social services.
+servers:
+  - url: https://bsky.social
+    description: bsky.social API server
+paths:
+  /xrpc/com.atproto.repo.listRecords:
+    get:
+      operationId: listRecords
+      summary: List records from a specified repository and collection
+      parameters:
+        - name: repo
+          in: query
+          required: true
+          description: Repository to list records from, typically a DID like 'sudojames.com'
+          schema:
+            type: string
+        - name: collection
+          in: query
+          required: true
+          description: Collection to list records from within the repository, e.g., 'app.bsky.feed.post'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  records:
+                    type: array
+                    items:
+                      type: object
+}
