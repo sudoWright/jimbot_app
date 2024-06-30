@@ -1,0 +1,42 @@
+openapi: 3.1.0
+info:
+  title: WolframAlpha Conversational API
+  description: API for interacting with WolframAlpha's Conversational services.
+  version: 1.0.0
+servers:
+  - url: https://api.wolframalpha.com
+paths:
+  /v1/conversation.jsp:
+    get:
+      summary: Converse with WolframAlpha
+      description: Send a query to WolframAlpha and get a response.
+      operationId: converse
+      parameters:
+        - name: appid
+          in: query
+          required: true
+          schema:
+            type: string
+          default: XXXXXX-APPID
+          description: WolframAlpha APP_ID.
+        - name: i
+          in: query
+          required: true
+          schema:
+            type: string
+          description: The user input or query for WolframAlpha.
+      responses:
+        '200':
+          description: Successful response from WolframAlpha.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversationResponse'
+components:
+  schemas:
+    ConversationResponse:
+      type: object
+      properties:
+        result:
+          type: string
+          description: The response from WolframAlpha.
