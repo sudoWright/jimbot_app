@@ -1,0 +1,390 @@
+openapi: 3.1.0
+info:
+  title: Shodan API
+  version: 1.0.0
+  description: >
+    The Shodan API provides access to all of the data that Shodan collects. You can search Shodan, look up hosts, and retrieve various types of information from the Shodan database.
+  contact:
+    name: Shodan
+    url: https://api.shodan.io
+  termsOfService: https://www.shodan.io/tos
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+
+servers:
+  - url: https://api.shodan.io
+
+paths:
+  /shodan/host/{ip}:
+    get:
+      operationId: getHostInfo
+      summary: Get information about a specific host
+      description: Returns all available information Shodan has on a given host IP.
+      parameters:
+        - name: ip
+          in: path
+          required: true
+          description: The IP address of the host.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ip_str:
+                    type: string
+                  hostnames:
+                    type: array
+                    items:
+                      type: string
+                  os:
+                    type: string
+                  ports:
+                    type: array
+                    items:
+                      type: integer
+                  # Add other properties as needed
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+
+  /shodan/host/search:
+    get:
+      operationId: searchHosts
+      summary: Search Shodan
+      description: Search Shodan using the same query syntax as the website and use facets to get summary information.
+      parameters:
+        - name: query
+          in: query
+          required: true
+          description: The search query; identical to the website.
+          schema:
+            type: string
+        - name: facets
+          in: query
+          required: false
+          description: A comma-separated list of properties to get summary information on.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  matches:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        ip_str:
+                          type: string
+                        port:
+                          type: integer
+                        data:
+                          type: string
+                        # Add other properties as needed
+                  total:
+                    type: integer
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+
+  /shodan/ports:
+    get:
+      operationId: listPorts
+      summary: List all ports that Shodan is crawling on the Internet.
+      description: Returns a list of port numbers that the crawlers are looking for.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+
+  /shodan/protocols:
+    get:
+      operationId: listProtocols
+      summary: List all protocols that can be used when performing on-demand Internet scans.
+      description: Returns a list of protocols that can be used for on-demand Internet scans.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  protocols:
+                    type: object
+                    additionalProperties:
+                      type: string
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+
+  /shodan/account/profile:
+    get:
+      operationId: getAccountProfile
+      summary: Get account profile information
+      description: Retrieves information about the Shodan account linked to this API key.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  member:
+                    type: boolean
+                  display_name:
+                    type: string
+                  created:
+                    type: string
+                    format: date-time
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+
+  /dns/domain/{domain}:
+    get:
+      operationId: getDomainInfo
+      summary: Get information about a specific domain
+      description: Returns information about a given domain name.
+      parameters:
+        - name: domain
+          in: path
+          required: true
+          description: The domain name to lookup.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  domain:
+                    type: string
+                  data:
+                    type: object
+                    additionalProperties:
+                      type: object
+                  # Add other properties as needed
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+
+  /dns/resolve:
+    get:
+      operationId: resolveDns
+      summary: Resolve a hostname to an IP
+      description: Resolves a hostname to an IP address.
+      parameters:
+        - name: hostname
+          in: query
+          required: true
+          description: The hostname to resolve.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  hostname:
+                    type: string
+                  ip:
+                    type: string
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+
+  /dns/reverse:
+    get:
+      operationId: reverseDns
+      summary: Reverse DNS lookup
+      description: Performs a reverse DNS lookup to get the hostname of an IP address.
+      parameters:
+        - name: ip
+          in: query
+          required: true
+          description: The IP address to lookup.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ip:
+                    type: string
+                  hostname:
+                    type: string
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+
+  /tools/httpheaders:
+    get:
+      operationId: getHttpHeaders
+      summary: Retrieve HTTP headers
+      description: Returns the HTTP headers that your client sends to the server.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  headers:
+                    type: object
+                    additionalProperties:
+                      type: string
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+
+  /tools/myip:
+    get:
+      operationId: getMyIp
+      summary: Get your IP address
+      description: Returns the IP address of the client.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ip:
+                    type: string
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+
+  /api-info:
+    get:
+      operationId: getApiInfo
+      summary: Get API usage information
+      description: Returns information about the current API key's usage.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  plan:
+                    type: string
+                  query_credits:
+                    type: integer
+                  scan_credits:
+                    type: integer
+                  usage_limits:
+                    type: object
+                    properties:
+                      scans:
+                        type: integer
+                      query:
+                        type: integer
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+
+security:
+  - ApiKeyAuth: []
