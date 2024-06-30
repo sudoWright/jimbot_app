@@ -1,0 +1,106 @@
+openapi: 3.1.0
+info:
+  title: Bing Search API
+  description: This API uses the Bing Web Search API v7 and Bing News Search API v7 to retrieve different kinds of media and news from the web.
+  version: 1.0.0
+  contact:
+    name: Microsoft Corporation
+    url: https://www.microsoft.com
+    email: support@microsoft.com
+    x-subscription-id: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+servers:
+  - url: https://api.bing.microsoft.com
+paths:
+  /v7.0/search:
+    get:
+      operationId: searchWeb
+      summary: Search the web for a query
+      description: Perform a web search using Bing Web Search API v7 and retrieve various types of media.
+      parameters:
+        - name: q
+          in: query
+          description: The search query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A JSON response with search results and relevant HTTP headers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/searchResponse'
+      security:
+        - OcpApimSubscriptionKey: []
+      x-ms-parameter-location:
+        name: cc
+        x-ms-parameter-location: "client"
+        description: The market where results come from, by default is GLOBAL
+        required: false
+        schema:
+          type: string
+  /v7.0/news/search:
+    get:
+      operationId: searchNews
+      summary: Search news for a query
+      description: Perform a news search using Bing News Search API v7 and retrieve various news articles.
+      parameters:
+        - name: q
+          in: query
+          description: The search query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A JSON response with news search results and relevant HTTP headers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/newsSearchResponse'
+      security:
+        - OcpApimSubscriptionKey: []
+      x-ms-parameter-location:
+        name: cc
+        x-ms-parameter-location: "client"
+        description: The market where results come from, by default is GLOBAL
+        required: false
+        schema:
+          type: string
+components:
+  securitySchemes:
+    OcpApimSubscriptionKey:
+      type: apiKey
+      in: header
+      name: Ocp-Apim-Subscription-Key
+      description: The subscription key for accessing the Bing Web Search API
+  schemas:
+    searchResponse:
+      type: object
+      properties:
+        jsonResponse:
+          type: object
+          description: The search results in JSON format
+        relevantHeaders:
+          type: object
+          additionalProperties:
+            type: string
+          description: Relevant HTTP headers from the Bing Web Search API response
+    newsSearchResponse:
+      type: object
+      properties:
+        jsonResponse:
+          type: object
+          description: The news search results in JSON format
+        relevantHeaders:
+          type: object
+          additionalProperties:
+            type: string
+          description: Relevant HTTP headers from the Bing News Search API response
+security:
+  - OcpApimSubscriptionKey: []
+tags:
+  - name: Bing Web Search
+    description: Operations related to the Bing Web Search API
+  - name: Bing News Search
+    description: Operations related to the Bing News Search API
