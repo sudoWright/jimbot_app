@@ -23,13 +23,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: cc
-          in: query
-          x-ms-parameter-location: client
-          description: The market where results come from, by default is GLOBAL
-          required: false
-          schema:
-            type: string
       responses:
         '200':
           description: A JSON response with search results and relevant HTTP headers
@@ -39,6 +32,13 @@ paths:
                 $ref: '#/components/schemas/searchResponse'
       security:
         - OcpApimSubscriptionKey: []
+      x-ms-parameter-location:
+        name: cc
+        x-ms-parameter-location: "client"
+        description: The market where results come from, by default is GLOBAL
+        required: false
+        schema:
+          type: string
   /v7.0/news/search:
     get:
       operationId: searchNews
@@ -51,13 +51,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: cc
-          in: query
-          x-ms-parameter-location: client
-          description: The market where results come from, by default is GLOBAL
-          required: false
-          schema:
-            type: string
       responses:
         '200':
           description: A JSON response with news search results and relevant HTTP headers
@@ -67,6 +60,13 @@ paths:
                 $ref: '#/components/schemas/newsSearchResponse'
       security:
         - OcpApimSubscriptionKey: []
+      x-ms-parameter-location:
+        name: cc
+        x-ms-parameter-location: "client"
+        description: The market where results come from, by default is GLOBAL
+        required: false
+        schema:
+          type: string
 components:
   securitySchemes:
     OcpApimSubscriptionKey:
