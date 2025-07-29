@@ -29,7 +29,7 @@ JimBot🤖 was created by James Wright, an enthusiast of AI and technology, blen
 
 "Live Long and Prosper🖖🏻" - JimBot🤖
 
-![image](https://github.com/user-attachments/assets/77acc5cb-2063-4241-a36a-30f6df9ae02f)
+![image](https://github.com/user-attachments/assets/d6691169-41ba-4bb8-9262-01e68e4c9d3b)
 
 ![image](https://github.com/user-attachments/assets/12229de3-3f44-45de-b44b-77d5530783bf)
 
